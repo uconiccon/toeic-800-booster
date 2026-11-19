@@ -9,17 +9,19 @@
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-12">
 
   <!-- Header -->
-  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <span class="bg-amber-500 text-black font-black text-xs px-2 py-1 rounded tracking-wider">PROGRIT STYLE</span>
-        <h1 class="font-bold text-lg text-slate-100">TOEIC 650 → 800 Booster</h1>
+      <div class="flex items-center space-x-2 md:space-x-3">
+        <span class="bg-amber-500 text-black font-black text-xs px-2 py-0.5 rounded tracking-wider">PROGRIT STYLE</span>
+        <h1 class="font-bold text-base md:text-lg text-slate-100">TOEIC 650 → 800 Booster</h1>
       </div>
-      <div id="day-counter" class="text-xs bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 text-slate-300">
-        Day <span id="current-day" class="font-bold text-amber-400">1</span> / 90
+      <div class="flex items-center space-x-2">
+        <div id="day-counter" class="text-xs bg-slate-800 px-3 py-1 rounded-full border border-slate-700 text-slate-300">
+          Day <span id="current-day" class="font-bold text-amber-400">1</span> / 90
+        </div>
       </div>
     </div>
   </header>
@@ -27,13 +29,31 @@
   <!-- Main Container -->
   <main class="max-w-5xl mx-auto px-4 py-6 space-y-6">
 
+    <!-- Mode Selector Banner -->
+    <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="text-xs text-slate-300">
+        <span class="font-bold text-slate-100">本日のモード選択：</span> その日の忙しさに合わせて選んでください
+      </div>
+      <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 w-full sm:w-auto">
+        <button onclick="setMode('180')" id="mode-btn-180" class="flex-1 sm:flex-none text-xs font-bold py-1.5 px-4 rounded-lg transition-all text-slate-400">
+          🔥 通常 180分 (3h)
+        </button>
+        <button onclick="setMode('90')" id="mode-btn-90" class="flex-1 sm:flex-none text-xs font-bold py-1.5 px-4 rounded-lg transition-all bg-amber-500 text-black shadow">
+          ⚡ レスキュー 90分 (1.5h)
+        </button>
+      </div>
+    </div>
+
     <!-- KPI Dashboard -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-        <div class="text-xs text-slate-400 mb-1">本日の学習時間（目標: 180分）</div>
+        <div class="text-xs text-slate-400 mb-1 flex justify-between">
+          <span>本日の学習時間</span>
+          <span id="kpi-target-label" class="font-semibold text-amber-400">目標: 90分</span>
+        </div>
         <div class="flex items-baseline space-x-2">
           <span id="kpi-today-min" class="text-3xl font-extrabold text-amber-400">0</span>
-          <span class="text-xs text-slate-400">分 / 180分</span>
+          <span id="kpi-today-denom" class="text-xs text-slate-400">分 / 90分</span>
         </div>
         <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
           <div id="kpi-today-bar" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
@@ -60,11 +80,11 @@
     </div>
 
     <!-- Tabs Navigation -->
-    <div class="flex border-b border-slate-800 space-x-4">
-      <button onclick="switchTab('daily')" id="tab-btn-daily" class="py-2.5 px-4 font-semibold text-sm border-b-2 border-amber-500 text-amber-400">デイリータスク</button>
-      <button onclick="switchTab('shadowing')" id="tab-btn-shadowing" class="py-2.5 px-4 font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200">シャドーイングタイマー</button>
-      <button onclick="switchTab('wpm')" id="tab-btn-wpm" class="py-2.5 px-4 font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200">WPM速読測定</button>
-      <button onclick="switchTab('coach')" id="tab-btn-coach" class="py-2.5 px-4 font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200">コーチング処方箋</button>
+    <div class="flex border-b border-slate-800 space-x-2 md:space-x-4 overflow-x-auto">
+      <button onclick="switchTab('daily')" id="tab-btn-daily" class="py-2.5 px-3 md:px-4 font-semibold text-xs md:text-sm border-b-2 border-amber-500 text-amber-400 whitespace-nowrap">デイリータスク</button>
+      <button onclick="switchTab('shadowing')" id="tab-btn-shadowing" class="py-2.5 px-3 md:px-4 font-semibold text-xs md:text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">シャドーイングタイマー</button>
+      <button onclick="switchTab('wpm')" id="tab-btn-wpm" class="py-2.5 px-3 md:px-4 font-semibold text-xs md:text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">WPM速読測定</button>
+      <button onclick="switchTab('coach')" id="tab-btn-coach" class="py-2.5 px-3 md:px-4 font-semibold text-xs md:text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">コーチング処方箋</button>
     </div>
 
     <!-- TAB 1: Daily Tasks -->
@@ -72,64 +92,18 @@
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
         <div class="flex justify-between items-center mb-4">
           <div>
-            <h2 class="font-bold text-base text-slate-100">本日の科学的トレーニングメニュー</h2>
-            <p class="text-xs text-slate-400">スキマ時間とまとまった時間を組み合わせ、180分を達成してください。</p>
+            <h2 id="task-menu-title" class="font-bold text-base text-slate-100">本日のトレーニングメニュー（90分レスキュー）</h2>
+            <p id="task-menu-subtitle" class="text-xs text-slate-400">忙しい日でも最低限これだけは死守する高密度メニューです。</p>
           </div>
-          <button onclick="resetTasks()" class="text-xs text-slate-500 hover:text-slate-300 underline">チェックをリセット</button>
+          <button onclick="resetTasks()" class="text-xs text-slate-500 hover:text-slate-300 underline">リセット</button>
         </div>
 
         <div id="task-list" class="space-y-3">
-          <!-- Item 1 -->
-          <div class="flex items-center justify-between p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
-            <label class="flex items-center space-x-3 cursor-pointer select-none">
-              <input type="checkbox" data-minutes="30" class="task-check rounded border-slate-700 text-amber-500 focus:ring-0 w-4 h-4 bg-slate-900">
-              <div>
-                <span class="font-medium text-sm block">朝：単語高速周回（金のフレーズ 100語）</span>
-                <span class="text-xs text-slate-400">1語1秒で意味が出るまで音声とセットで回す（語彙知識の自動化）</span>
-              </div>
-            </label>
-            <span class="text-xs text-slate-400 font-mono">30分</span>
-          </div>
-
-          <!-- Item 2 -->
-          <div class="flex items-center justify-between p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
-            <label class="flex items-center space-x-3 cursor-pointer select-none">
-              <input type="checkbox" data-minutes="30" class="task-check rounded border-slate-700 text-amber-500 focus:ring-0 w-4 h-4 bg-slate-900">
-              <div>
-                <span class="font-medium text-sm block">昼：文法 Part 5 タイムアタック（30問）</span>
-                <span class="text-xs text-slate-400">でる1000問等を使用。1問20秒以内で根拠を持って解く</span>
-              </div>
-            </label>
-            <span class="text-xs text-slate-400 font-mono">30分</span>
-          </div>
-
-          <!-- Item 3 -->
-          <div class="flex items-center justify-between p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
-            <label class="flex items-center space-x-3 cursor-pointer select-none">
-              <input type="checkbox" data-minutes="60" class="task-check rounded border-slate-700 text-amber-500 focus:ring-0 w-4 h-4 bg-slate-900">
-              <div>
-                <span class="font-medium text-sm block">夜：公式問題集 Part 3/4 徹底シャドーイング</span>
-                <span class="text-xs text-slate-400">1題を30回以上。音声変化（リダクション・リエゾン）を完コピ（音声知覚の自動化）</span>
-              </div>
-            </label>
-            <span class="text-xs text-slate-400 font-mono">60分</span>
-          </div>
-
-          <!-- Item 4 -->
-          <div class="flex items-center justify-between p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
-            <label class="flex items-center space-x-3 cursor-pointer select-none">
-              <input type="checkbox" data-minutes="60" class="task-check rounded border-slate-700 text-amber-500 focus:ring-0 w-4 h-4 bg-slate-900">
-              <div>
-                <span class="font-medium text-sm block">夜：Part 7 精読＆スラッシュ音読速読</span>
-                <span class="text-xs text-slate-400">返り読みせず左から右へ塊（チャンク）で理解。目標WPM 150達成</span>
-              </div>
-            </label>
-            <span class="text-xs text-slate-400 font-mono">60分</span>
-          </div>
+          <!-- Dynamic task items injected via JS -->
         </div>
 
-        <div class="mt-5 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-200 text-xs flex items-center justify-between">
-          <span>チェックを入れると本日の学習時間と累計時間が自動加算されます。</span>
+        <div class="mt-6 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-200 text-xs flex items-center justify-between">
+          <span>完了したタスクにチェックを入れてください（自動集計されます）。</span>
           <button onclick="advanceDay()" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-3 py-1 rounded text-xs">翌日に進む ➜</button>
         </div>
       </div>
@@ -138,15 +112,22 @@
     <!-- TAB 2: Shadowing Timer -->
     <section id="tab-shadowing" class="hidden space-y-4">
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center max-w-xl mx-auto">
-        <h2 class="font-bold text-lg text-slate-100">PROGRIT式 3ステップ・シャドーイング</h2>
-        <p class="text-xs text-slate-400 mt-1">1題あたり約15〜20分×3セット行います。</p>
+        <h2 class="font-bold text-lg text-slate-100">PROGRIT式 シャドーイングタイマー</h2>
+        <p class="text-xs text-slate-400 mt-1">時間を設定して一気に集中しましょう。</p>
 
-        <div class="my-6">
+        <!-- Presets -->
+        <div class="flex justify-center space-x-2 my-4">
+          <button onclick="setTimerPreset(15)" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">15分</button>
+          <button onclick="setTimerPreset(30)" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">30分</button>
+          <button onclick="setTimerPreset(45)" class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">45分（90分プラン推奨）</button>
+        </div>
+
+        <div class="my-4">
           <div id="step-badge" class="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-slate-800 text-amber-400 border border-slate-700 mb-2">
-            Step 1: 音読（テキストを見ながら意味と音を一致）
+            耳と口の筋トレセッション
           </div>
           <div id="timer-display" class="font-mono text-5xl font-black text-slate-100 my-4">
-            15:00
+            45:00
           </div>
           <div class="flex justify-center space-x-3">
             <button id="timer-toggle-btn" onclick="toggleTimer()" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-2.5 rounded-lg text-sm">スタート</button>
@@ -154,18 +135,18 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 text-left text-xs bg-slate-950 p-3 rounded-lg border border-slate-800">
+        <div class="grid grid-cols-3 gap-2 text-left text-xs bg-slate-950 p-3 rounded-lg border border-slate-800 mt-6">
           <div class="p-2 border-r border-slate-800">
-            <span class="font-bold text-amber-400 block mb-1">Step 1: 音読</span>
-            音と意味の照合。構文を把握した状態で声に出す。
+            <span class="font-bold text-amber-400 block mb-1">Step 1: 精読・音読</span>
+            意味と構文を100%理解した状態で音読。
           </div>
           <div class="p-2 border-r border-slate-800">
             <span class="font-bold text-sky-400 block mb-1">Step 2: オーバーラッピング</span>
-            スクリプトを見ながら音源と完全に被せて発音。
+            スクリプトを見ながら音源に完全に被せる。
           </div>
           <div class="p-2">
             <span class="font-bold text-emerald-400 block mb-1">Step 3: シャドーイング</span>
-            テキストは見ない。0.5秒遅れで影のように追唱。
+            スクリプトは見ない。0.5秒遅れで影のように追唱。
           </div>
         </div>
       </div>
@@ -176,17 +157,17 @@
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-xl mx-auto space-y-4">
         <div>
           <h2 class="font-bold text-lg text-slate-100">WPM（読解速度）スピード測定ツール</h2>
-          <p class="text-xs text-slate-400">Part 7の英文の語数と、読み切った時間を入力してください。</p>
+          <p class="text-xs text-slate-400">Part 7のパッセージの語数と、読了にかかった秒数を入力してください。</p>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="text-xs text-slate-400 block mb-1">パッセージの総語数（words）</label>
-            <input type="number" id="wpm-words" value="200" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-100 focus:border-amber-500 focus:outline-none">
+            <input type="number" id="wpm-words" value="180" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-100 focus:border-amber-500 focus:outline-none">
           </div>
           <div>
             <label class="text-xs text-slate-400 block mb-1">読了にかかった時間（秒）</label>
-            <input type="number" id="wpm-seconds" value="80" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-100 focus:border-amber-500 focus:outline-none">
+            <input type="number" id="wpm-seconds" value="72" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-100 focus:border-amber-500 focus:outline-none">
           </div>
         </div>
 
@@ -205,37 +186,23 @@
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
         <div>
           <span class="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded font-mono">PROGRIT COACHING NOTE</span>
-          <h2 class="text-lg font-bold text-slate-100 mt-2">650点から800点を掴み取る「90日間のロードマップ」</h2>
+          <h2 class="text-lg font-bold text-slate-100 mt-2">平日は90分、休日は180分で無理なく勝つ戦略</h2>
         </div>
 
         <div class="space-y-4">
           <div class="p-4 bg-slate-950 border border-slate-800 rounded-lg">
-            <h3 class="text-sm font-bold text-amber-400">第1ヶ月目：音声知覚の徹底破壊と再生（目標: 700点レベル）</h3>
+            <h3 class="text-sm font-bold text-amber-400">「ゼロの日を作らない」ことが最大の成功要因</h3>
             <p class="text-xs text-slate-300 mt-1">
-              まずはリスニング400点を確実に超えさせます。ディクテーションで「自分が聞き取れていない音のクセ（弱形や連結）」を暴き、毎日1時間のシャドーイングを徹底します。単語は『金フレ』を最低2周完了させてください。
+              仕事で疲れた日に「3時間できないから今日はやらない」となるのが一番の毒です。90分プランでシャドーイングと単語だけでも繋げば、言語の神経回路は退化しません。
             </p>
           </div>
 
           <div class="p-4 bg-slate-950 border border-slate-800 rounded-lg">
-            <h3 class="text-sm font-bold text-sky-400">第2ヶ月目：構文処理の自動化とPart 5無双（目標: 750点レベル）</h3>
+            <h3 class="text-sm font-bold text-sky-400">90分プランの日のシャドーイングのコツ</h3>
             <p class="text-xs text-slate-300 mt-1">
-              Part 5を10分以内に解き切る瞬発力を養います。『でる1000問』の文法パターンを暗記ではなく「構造理解」で解くトレーニングに移行。リーディングで返り読みを禁止し、スラッシュ単位で直読直解する訓練を行います。
+              忙しい日は「新しいトラック」を始めず、「前日までに精読が終わっているトラック」を使ってオーバーラッピングとシャドーイングだけに45分集中してください。短時間で極めて高い負荷がかかります。
             </p>
           </div>
-
-          <div class="p-4 bg-slate-950 border border-slate-800 rounded-lg">
-            <h3 class="text-sm font-bold text-emerald-400">第3ヶ月目：実戦模試演習とPart 7速度固定（目標: 800点達成！）</h3>
-            <p class="text-xs text-slate-300 mt-1">
-              公式問題集を本番同様の2時間で通し解きし、タイムマネジメントを体に叩き込みます。読解速度WPM 150を維持しながらPart 7のマルチプルパッセージを塗り絵なしで解き終える状態を作り上げます。
-            </p>
-          </div>
-        </div>
-
-        <div class="p-4 bg-slate-800/40 rounded-lg border border-slate-700/50">
-          <h4 class="text-xs font-bold text-slate-200 mb-1">コンサルタントからのメッセージ</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            「モチベーションに頼らず、学習を“歯磨き”と同じ仕組みにすること」。これがプログリットで800点を突破する受講生の共通項です。忙しい日でもゼロにせず、まずは単語10分から机に向かいましょう。全力で伴走します！
-          </p>
         </div>
       </div>
     </section>
@@ -246,15 +213,31 @@
     // State Management
     let state = {
       day: 1,
+      mode: '90', // '90' or '180'
       todayMinutes: 0,
       totalHours: 0.0,
       lastWPM: null,
-      tasks: [false, false, false, false]
+      tasks180: [false, false, false, false],
+      tasks90: [false, false, false, false]
     };
 
-    // Load from LocalStorage
+    const taskDefinitions = {
+      '180': [
+        { title: '朝：単語高速周回（金のフレーズ 100語）', desc: '1語1秒。赤シート仕分けテスト＆abceed音声確認', mins: 30 },
+        { title: '昼：文法 Part 5 タイムアタック（30〜32問）', desc: '1問20秒で11分解き切り ➜ 16分で根拠の言語化復習', mins: 30 },
+        { title: '夜：公式問題集 Part 3/4 徹底シャドーイング', desc: '1題を徹底的に完コピ（精読15分・被せ15分・影追30分）', mins: 60 },
+        { title: '夜：Part 7 精読＆スラッシュ音読速読', desc: 'WPM計測 ➜ スラッシュ区切りで語順通りに5回以上音読', mins: 60 }
+      ],
+      '90': [
+        { title: '朝：金フレ・レ点単語フォーカス高速復習', desc: '過去に間違えた「レ点単語」だけに絞って1語1秒チェック', mins: 15 },
+        { title: '昼：でる1000問 ハーフ・タイムアタック（15問）', desc: '5分で解き切り ➜ 10分で解説確認・根拠のセルフティーチング', mins: 15 },
+        { title: '夜：公式問題集 シャドーイング特化【最優先死守】', desc: '精読済み音源のオーバーラッピング(15分)＋シャドーイング(30分)', mins: 45 },
+        { title: '夜：Part 7 スラッシュ音読（短めの長文1本勝負）', desc: 'シングルパッセージ1本をWPM計測＆スラッシュ直読直解', mins: 15 }
+      ]
+    };
+
     function loadState() {
-      const saved = localStorage.getItem('progrit_toeic_state');
+      const saved = localStorage.getItem('progrit_toeic_state_v2');
       if (saved) {
         state = Object.assign(state, JSON.parse(saved));
       }
@@ -262,51 +245,121 @@
     }
 
     function saveState() {
-      localStorage.setItem('progrit_toeic_state', JSON.stringify(state));
+      localStorage.setItem('progrit_toeic_state_v2', JSON.stringify(state));
+    }
+
+    function setMode(newMode) {
+      state.mode = newMode;
+      // Recalculate today's minutes based on current mode's tasks
+      recalcTodayMinutes();
+      saveState();
+      renderUI();
+    }
+
+    function recalcTodayMinutes() {
+      const tasks = state.mode === '180' ? state.tasks180 : state.tasks90;
+      const defs = taskDefinitions[state.mode];
+      let sum = 0;
+      tasks.forEach((checked, idx) => {
+        if (checked) sum += defs[idx].mins;
+      });
+      state.todayMinutes = sum;
     }
 
     function renderUI() {
       document.getElementById('current-day').innerText = state.day;
       document.getElementById('kpi-today-min').innerText = state.todayMinutes;
       document.getElementById('kpi-total-hours').innerText = state.totalHours.toFixed(1);
-      
+
+      const targetMin = state.mode === '180' ? 180 : 90;
+      document.getElementById('kpi-target-label').innerText = `目標: ${targetMin}分`;
+      document.getElementById('kpi-today-denom').innerText = `分 / ${targetMin}分`;
+
       const left = Math.max(0, 270 - state.totalHours).toFixed(1);
       document.getElementById('hours-left').innerText = left;
 
-      const pct = Math.min(100, Math.round((state.todayMinutes / 180) * 100));
+      const pct = Math.min(100, Math.round((state.todayMinutes / targetMin) * 100));
       document.getElementById('kpi-today-bar').style.width = pct + '%';
 
       if (state.lastWPM) {
         document.getElementById('kpi-wpm').innerText = state.lastWPM;
       }
 
-      // Tasks Checkboxes
-      const checkboxes = document.querySelectorAll('.task-check');
-      checkboxes.forEach((cb, idx) => {
-        cb.checked = !!state.tasks[idx];
+      // Mode Buttons Style
+      const btn180 = document.getElementById('mode-btn-180');
+      const btn90 = document.getElementById('mode-btn-90');
+      if (state.mode === '180') {
+        btn180.className = "flex-1 sm:flex-none text-xs font-bold py-1.5 px-4 rounded-lg transition-all bg-amber-500 text-black shadow";
+        btn90.className = "flex-1 sm:flex-none text-xs font-bold py-1.5 px-4 rounded-lg transition-all text-slate-400";
+        document.getElementById('task-menu-title').innerText = "本日のトレーニングメニュー（通常 180分）";
+        document.getElementById('task-menu-subtitle').innerText = "朝・昼・夜に分散させ、3時間で圧倒的負荷をかける王道メニューです。";
+      } else {
+        btn90.className = "flex-1 sm:flex-none text-xs font-bold py-1.5 px-4 rounded-lg transition-all bg-amber-500 text-black shadow";
+        btn180.className = "flex-1 sm:flex-none text-xs font-bold py-1.5 px-4 rounded-lg transition-all text-slate-400";
+        document.getElementById('task-menu-title').innerText = "本日のトレーニングメニュー（90分 レスキュー）";
+        document.getElementById('task-menu-subtitle').innerText = "忙しい日でも最低限これだけは死守する高密度メニューです。";
+      }
+
+      // Render Task List
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const container = document.getElementById('task-list');
+      container.innerHTML = '';
+      const defs = taskDefinitions[state.mode];
+      const taskStates = state.mode === '180' ? state.tasks180 : state.tasks90;
+
+      defs.forEach((t, idx) => {
+        const checked = !!taskStates[idx];
+        const div = document.createElement('div');
+        div.className = "flex items-center justify-between p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition";
+        div.innerHTML = `
+          <label class="flex items-center space-x-3 cursor-pointer select-none">
+            <input type="checkbox" data-idx="${idx}" ${checked ? 'checked' : ''} class="task-checkbox rounded border-slate-700 text-amber-500 focus:ring-0 w-4 h-4 bg-slate-900">
+            <div>
+              <span class="font-medium text-sm block ${checked ? 'line-through text-slate-500' : 'text-slate-100'}">${t.title}</span>
+              <span class="text-xs text-slate-400">${t.desc}</span>
+            </div>
+          </label>
+          <span class="text-xs text-slate-400 font-mono">${t.mins}分</span>
+        `;
+        container.appendChild(div);
+      });
+
+      // Bind events
+      container.querySelectorAll('.task-checkbox').forEach(box => {
+        box.addEventListener('change', (e) => {
+          const idx = parseInt(e.target.dataset.idx, 10);
+          const checked = e.target.checked;
+          const mins = defs[idx].mins;
+
+          if (state.mode === '180') {
+            state.tasks180[idx] = checked;
+          } else {
+            state.tasks90[idx] = checked;
+          }
+
+          if (checked) {
+            state.totalHours += (mins / 60);
+          } else {
+            state.totalHours = Math.max(0, state.totalHours - (mins / 60));
+          }
+
+          recalcTodayMinutes();
+          saveState();
+          renderUI();
+        });
       });
     }
 
-    // Task Checkboxes handler
-    document.querySelectorAll('.task-check').forEach((cb, idx) => {
-      cb.addEventListener('change', (e) => {
-        const mins = parseInt(e.target.dataset.minutes, 10);
-        state.tasks[idx] = e.target.checked;
-        if (e.target.checked) {
-          state.todayMinutes += mins;
-          state.totalHours += (mins / 60);
-        } else {
-          state.todayMinutes = Math.max(0, state.todayMinutes - mins);
-          state.totalHours = Math.max(0, state.totalHours - (mins / 60));
-        }
-        saveState();
-        renderUI();
-      });
-    });
-
     function resetTasks() {
-      state.tasks = [false, false, false, false];
-      state.todayMinutes = 0;
+      if (state.mode === '180') {
+        state.tasks180 = [false, false, false, false];
+      } else {
+        state.tasks90 = [false, false, false, false];
+      }
+      recalcTodayMinutes();
       saveState();
       renderUI();
     }
@@ -314,7 +367,8 @@
     function advanceDay() {
       if (confirm('本日のタスクを締めくくり、次の日に進みますか？')) {
         state.day = Math.min(90, state.day + 1);
-        state.tasks = [false, false, false, false];
+        state.tasks180 = [false, false, false, false];
+        state.tasks90 = [false, false, false, false];
         state.todayMinutes = 0;
         saveState();
         renderUI();
@@ -338,13 +392,24 @@
 
     // Shadowing Timer
     let timerInterval = null;
-    let timerSeconds = 15 * 60;
+    let timerSeconds = 45 * 60;
     let isRunning = false;
 
     function formatTime(s) {
       const m = Math.floor(s / 60).toString().padStart(2, '0');
       const sec = (s % 60).toString().padStart(2, '0');
       return `${m}:${sec}`;
+    }
+
+    function setTimerPreset(mins) {
+      clearInterval(timerInterval);
+      isRunning = false;
+      timerSeconds = mins * 60;
+      document.getElementById('timer-display').innerText = formatTime(timerSeconds);
+      const btn = document.getElementById('timer-toggle-btn');
+      btn.innerText = 'スタート';
+      btn.classList.remove('bg-red-500');
+      btn.classList.add('bg-amber-500');
     }
 
     function toggleTimer() {
@@ -365,22 +430,15 @@
           } else {
             clearInterval(timerInterval);
             isRunning = false;
-            alert('シャドーイングセッション終了です！素晴らしい集中力でした。');
-            resetTimer();
+            alert('セッション終了です！素晴らしい集中力でした。');
+            setTimerPreset(45);
           }
         }, 1000);
       }
     }
 
     function resetTimer() {
-      clearInterval(timerInterval);
-      isRunning = false;
-      timerSeconds = 15 * 60;
-      document.getElementById('timer-display').innerText = formatTime(timerSeconds);
-      const btn = document.getElementById('timer-toggle-btn');
-      btn.innerText = 'スタート';
-      btn.classList.remove('bg-red-500');
-      btn.classList.add('bg-amber-500');
+      setTimerPreset(45);
     }
 
     // WPM Calculation
@@ -414,7 +472,6 @@
       renderUI();
     }
 
-    // Initialize
     loadState();
   </script>
 </body>
